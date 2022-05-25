@@ -1,14 +1,14 @@
 FROM openjdk:16-alpine3.13
 
-COPY mvnw ./pom.xml
+WORKDIR /petclinicSite
 
-COPY src ./src
+COPY .mvn/ .mvn
+COPY mvnw ./pom.xml ./
+
 
 RUN ./mvnw dependency:go-offline
 # executes
 
-WORKDIR /petclinicSite
-
 # COPY --from=maven target/SimpleJavaProject-*.jar ./SimpleJavaProject.jar
-
+COPY src ./src
 CMD ["./mvnw", "spring-boot:run"]
