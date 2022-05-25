@@ -1,17 +1,14 @@
-FROM openjdk<17>-alpine<v3.16>
+FROM openjdk:16-alpine3.13
 
-COPY ./pom.xml ./pom.xml
+COPY mvnw ./pom.xml
 
-COPY ./src ./src
+COPY src ./src
 
-RUN mvn dependency:go-offline -B
-
-RUN mvn package
-
-FROM openjdk:8u171-jre-alpine
+RUN ./mvnw dependency:go-offline
+# executes
 
 WORKDIR /petclinicSite
 
-COPY --from=maven target/SimpleJavaProject-*.jar ./SimpleJavaProject.jar
+# COPY --from=maven target/SimpleJavaProject-*.jar ./SimpleJavaProject.jar
 
-CMD ["java", "-jar", "./SimpleJavaProject.jar"]
+CMD ["./mvnw", "spring-boot:run"]
