@@ -1,4 +1,4 @@
-FROM openjdk<version>-alpine<version>
+FROM openjdk<version>-alpine<v3.16>
 
 COPY ./pom.xml ./pom.xml
 
@@ -6,11 +6,12 @@ COPY ./src ./src
 
 RUN mvn dependency:go-offline -B
 
-# RUN mvn package
+RUN mvn package
 
+FROM openjdk:8u171-jre-alpine
 
-WORKDIR /SITE
+WORKDIR /petclinicSite
 
-# COPY --from=maven target/SimpleJavaProject-*.jar ./SimpleJavaProject.jar
+COPY --from=maven target/SimpleJavaProject-*.jar ./SimpleJavaProject.jar
 
-# CMD ["java", "-jar", "./SimpleJavaProject.jar"]
+CMD ["java", "-jar", "./SimpleJavaProject.jar"]
